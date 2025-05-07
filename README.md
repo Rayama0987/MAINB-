@@ -35,8 +35,8 @@
 
       if (type === 0) {
         // (ax±by)²
-        a = Math.floor(Math.random() * 9) + 1;
-        b = Math.floor(Math.random() * 9) + 1;
+        a = Math.floor(Math.random() * 10) + 1;
+        b = Math.floor(Math.random() * 10) + 1;
         plus = Math.random() < 0.5;
 
         const operator = plus ? "+" : "-";
@@ -50,10 +50,10 @@
         }
       } else if (type === 1) {
         // (ax±by)(cx±dy)
-        a = Math.floor(Math.random() * 9) + 1;
-        b = Math.floor(Math.random() * 9) + 1;
-        const c = Math.floor(Math.random() * 9) + 1;
-        const d = Math.floor(Math.random() * 9) + 1;
+        a = Math.floor(Math.random() * 10) + 1;
+        b = Math.floor(Math.random() * 10) + 1;
+        const c = Math.floor(Math.random() * 10) + 1;
+        const d = Math.floor(Math.random() * 10) + 1;
         plus = Math.random() < 0.5;
 
         const operator1 = Math.random() < 0.5 ? "+" : "-";
