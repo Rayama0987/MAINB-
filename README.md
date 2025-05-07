@@ -2,7 +2,7 @@
 <html lang="ja">
 <head>
   <meta charset="UTF-8">
-  <title>乗法公式ゲーム</title>
+  <title>乗法公式ゲーム (ax±by)²</title>
   <style>
     body { font-family: Arial; padding: 20px; }
     input[type="text"] { width: 300px; font-size: 16px; }
@@ -12,14 +12,13 @@
 <body>
   <h1>乗法公式ゲーム</h1>
   <div id="question"></div>
-  <input type="text" id="answer" placeholder="例: x²+xy+y²">
+  <input type="text" id="answer" placeholder="x²+xy+y² みたいに入力">
   <br>
   <div>
+    <!-- 項目入力用ボタン -->
     <button onclick="addTerm('x²')">x²</button>
     <button onclick="addTerm('xy')">xy</button>
     <button onclick="addTerm('y²')">y²</button>
-    <button onclick="addTerm('+')">+</button>
-    <button onclick="addTerm('-')">−</button>
     <button onclick="clearInput()">消去</button>
   </div>
   <button onclick="checkAnswer()">解答！</button>
@@ -29,55 +28,62 @@
   <script>
     let questionCount = 0;
     let correctCount = 0;
-    let correctExpansion = "";
+    let a, b, plus, correctExpansion;
 
     function generateQuestion() {
-      const type = Math.floor(Math.random() * 3); // 0, 1, or 2
-      const questionDiv = document.getElementById("question");
+      const type = Math.floor(Math.random() * 4); // 0〜3まで対応に変更
 
       if (type === 0) {
         // (ax±by)²
-        const a = Math.floor(Math.random() * 10) + 1;
-        const b = Math.floor(Math.random() * 10) + 1;
-        const plus = Math.random() < 0.5;
-        const op = plus ? "+" : "-";
-        questionDiv.textContent = `Q${questionCount + 1}: ( ${a}x ${op} ${b}y )² を展開して！`;
+        a = Math.floor(Math.random() * 9) + 1;
+        b = Math.floor(Math.random() * 9) + 1;
+        plus = Math.random() < 0.5;
+
+        const operator = plus ? "+" : "-";
+        document.getElementById("question").textContent =
+          `Q${questionCount + 1}: ( ${a}x ${operator} ${b}y )² を展開して！`;
 
         if (plus) {
           correctExpansion = `${a*a}x²+${2*a*b}xy+${b*b}y²`;
         } else {
           correctExpansion = `${a*a}x²-${2*a*b}xy+${b*b}y²`;
         }
-
       } else if (type === 1) {
         // (ax±by)(cx±dy)
-        const a = Math.floor(Math.random() * 10) + 1;
-        const b = Math.floor(Math.random() * 10) + 1;
-        const c = Math.floor(Math.random() * 10) + 1;
-        const d = Math.floor(Math.random() * 10) + 1;
-        const plus1 = Math.random() < 0.5;
-        const plus2 = Math.random() < 0.5;
-        const op1 = plus1 ? "+" : "-";
-        const op2 = plus2 ? "+" : "-";
+        a = Math.floor(Math.random() * 9) + 1;
+        b = Math.floor(Math.random() * 9) + 1;
+        const c = Math.floor(Math.random() * 9) + 1;
+        const d = Math.floor(Math.random() * 9) + 1;
+        plus = Math.random() < 0.5;
 
-        questionDiv.textContent = `Q${questionCount + 1}: ( ${a}x ${op1} ${b}y )( ${c}x ${op2} ${d}y ) を展開して！`;
+        const operator1 = Math.random() < 0.5 ? "+" : "-";
+        const operator2 = Math.random() < 0.5 ? "+" : "-";
+        document.getElementById("question").textContent =
+          `Q${questionCount + 1}: ( ${a}x ${operator1} ${b}y )( ${c}x ${operator2} ${d}y ) を展開して！`;
 
         const ac = a * c;
         const ad = a * d;
         const bc = b * c;
         const bd = b * d;
-        const middle = (plus1 ? 1 : -1) * ad + (plus2 ? 1 : -1) * bc;
-        const signMiddle = middle >= 0 ? "+" : "-";
 
-        const midAbs = Math.abs(middle);
-        const signLast = (plus1 === plus2) ? "+" : "-";
+        const middleTerm = (plus ? 1 : -1) * ad + (plus ? 1 : -1) * bc;
+        const signMiddle = middleTerm >= 0 ? "+" : "-";
+        const absMiddle = Math.abs(middleTerm);
 
-        correctExpansion = `${ac}x²${signMiddle}${midAbs}xy${signLast}${bd}y²`;
-
+        correctExpansion = `${ac}x²${signMiddle}${absMiddle}xy${(plus ? "+" : "-")}${bd}y²`;
+      } else if (type === 2) {
+        // (x+y)(x−y)
+        document.getElementById("question").textContent = `Q${questionCount + 1}: (x + y)(x - y) を展開して！`;
+        correctExpansion = "x² - y²";
       } else {
-        // (x + y)(x - y)
-        questionDiv.textContent = `Q${questionCount + 1}: ( x + y )( x - y ) を展開して！`;
-        correctExpansion = "x²-y²";
+        // (ax+by)(ax−by)
+        a = Math.floor(Math.random() * 5) + 1;
+        b = Math.floor(Math.random() * 5) + 1;
+        document.getElementById("question").textContent = `Q${questionCount + 1}: ( ${a}x + ${b}y )( ${a}x - ${b}y ) を展開して！`;
+
+        const ax2 = a * a;
+        const by2 = b * b;
+        correctExpansion = `${ax2}x²-${by2}y²`;
       }
     }
 
@@ -86,10 +92,10 @@
       const result = document.getElementById("result");
 
       if (userAnswer === correctExpansion) {
-        result.textContent = "正解！ 🎉";
+        result.textContent = "正解！";
         correctCount++;
       } else {
-        result.textContent = `不正解 😢 正解は ${correctExpansion}`;
+        result.textContent = `不正解。正解は ${correctExpansion}`;
       }
 
       questionCount++;
@@ -124,9 +130,8 @@
     }
 
     function clearInput() {
-      const input = document.getElementById("answer");
-      input.value = "";
-      input.focus();
+      document.getElementById("answer").value = "";
+      document.getElementById("answer").focus();
     }
 
     generateQuestion();
