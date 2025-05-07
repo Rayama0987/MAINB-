@@ -31,7 +31,7 @@
     let a, b, plus, correctExpansion;
 
     function generateQuestion() {
-      const type = Math.floor(Math.random() * 4); // 0〜3まで対応に変更
+      const type = Math.floor(Math.random() * 3); // 0〜2まで対応に変更
 
       if (type === 0) {
         // (ax±by)²
@@ -71,19 +71,10 @@
         const absMiddle = Math.abs(middleTerm);
 
         correctExpansion = `${ac}x²${signMiddle}${absMiddle}xy${(plus ? "+" : "-")}${bd}y²`;
-      } else if (type === 2) {
+      } else {
         // (x+y)(x−y)
         document.getElementById("question").textContent = `Q${questionCount + 1}: (x + y)(x - y) を展開して！`;
         correctExpansion = "x² - y²";
-      } else {
-        // (ax+by)(ax−by)
-        a = Math.floor(Math.random() * 5) + 1;
-        b = Math.floor(Math.random() * 5) + 1;
-        document.getElementById("question").textContent = `Q${questionCount + 1}: ( ${a}x + ${b}y )( ${a}x - ${b}y ) を展開して！`;
-
-        const ax2 = a * a;
-        const by2 = b * b;
-        correctExpansion = `${ax2}x²-${by2}y²`;
       }
     }
 
