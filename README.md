@@ -71,10 +71,8 @@
         const absMiddle = Math.abs(middleTerm);
 
         correctExpansion = `${ac}x²${signMiddle}${absMiddle}xy${(plus ? "+" : "-")}${bd}y²`;
-      } else {
-        // (x+y)(x−y)
-        document.getElementById("question").textContent = `Q${questionCount + 1}: (x + y)(x - y) を展開して！`;
-        correctExpansion = "x² - y²";
+      } 
+        
       }
     }
 
